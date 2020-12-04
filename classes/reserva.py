@@ -4,7 +4,7 @@ from classes.socio import Socio
 
 
 class Reserva:
-    def __init__(self, reservante: Socio, data_hora: str, duracao: int):
+    def __init__(self, reservante: Socio, data_hora: str, duracao: int = 0):
         '''data_hora ex.: 20/11/2020 14:30
            duração em minutos.'''
         self.__reservante = reservante
@@ -23,7 +23,7 @@ class Reserva:
         return self.__data_hora
 
     def set_data_hora(self, novo_data_hora: str):
-        self.__data_hora = novo_data_hora
+        self.__data_hora = datetime.strptime(novo_data_hora, "%d/%m/%Y %H:%M")
 
     def get_duracao(self):
         return self.__duracao
@@ -82,7 +82,7 @@ class Reserva:
 
     def __str__(self):
         return f'''------------------------------
-Reservante: {self.__reservante}
+Reservante: {self.__reservante.nome}
 Inicio: {self.str_inicio()}
 Término: {self.str_termino()}
 ------------------------------'''

@@ -45,4 +45,24 @@ class Sala:
         '''Faz uma nova reserva.'''
         self.__reservas.adicionar(Reserva(reservante, data_hora, duracao))
 
+    def desfazer_reserva(self, reservante: Socio, data_hora: str):
+        '''Remove uma reserva feita.'''
+        self.__reservas.remover(Reserva(reservante, data_hora))
+
+    def modificar_reservante(self, reservante_anterior: Socio, data_hora: str, novo_reservante: Socio):
+        '''Muda o reservante de uma reserva feita.'''
+        index = self.__reservas.encontrar_reserva(Reserva(reservante_anterior, data_hora))
+        if index != -1:
+            self.__reservas.lista[index].reservante = novo_reservante
+            return
+        print("Reserva não encontrada.")
+
+    def modificar_horario(self, reservante: Socio, data_hora_anterior: str, novo_data_hora: str):
+        '''Muda a data e horário de uma reserva feita.'''
+        index = self.__reservas.encontrar_reserva(Reserva(reservante, data_hora_anterior))
+        if index != -1:
+            self.__reservas.lista[index].data_hora = novo_data_hora
+            return
+        print("Reserva não encontrada.")
+
 # ----------------------------------------------------------

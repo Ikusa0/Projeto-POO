@@ -1,16 +1,16 @@
 from classes.reserva import Reserva
 
 
-def busca_binaria(target: Reserva, array: list, start: int, end: int) -> int:
+def busca_binaria(target: Reserva, array: list, start: int, end: int, mode: str = "add") -> int:
     if start <= end:
         mid = (start + end) // 2
         if array[mid] == target:
-            return -1
+            return -1 if mode == "add" else mid
         if target > array[mid]:
-            return busca_binaria(target, array, mid + 1, end)
+            return busca_binaria(target, array, mid + 1, end, mode)
         else:
-            return busca_binaria(target, array, start, mid - 1)
-    return start
+            return busca_binaria(target, array, start, mid - 1, mode)
+    return start if mode == "add" else -1
 
 
 class ListaOrdenada:
@@ -35,10 +35,22 @@ class ListaOrdenada:
             if self.esta_disponivel(reserva, index):  # caso haja disponibilidade de horário, reserve
                 self.__lista.insert(index, reserva)
             else:
-                print("choque de horário")  # do contrário, informe a indisponibilidade
+                print("Choque de horário.")  # do contrário, informe a indisponibilidade
             return
 
         self.__lista.append(reserva)  # caso não existam reservas, basta reservar sem checagens
+
+    def remover(self, reserva: Reserva) -> None:
+        '''Remove uma reserva da lista.'''
+        if not self.esta_vazia():
+            # encontrar a posição da reserva
+            index = self.encontrar_reserva(reserva)
+            if index != -1:  # caso exista a reserva, remova-a
+                self.__lista.pop(index)
+            else:
+                print("Reserva não encontrada.")  # do contrário, informe
+            return
+        print("Ainda não foram feitas reservas.")  # se não houverem reservas feitas, informe
 
 # ----------------------------------------------------------
 
@@ -59,5 +71,13 @@ class ListaOrdenada:
                 return False
         except IndexError: pass
         return True  # não há choques de horários
+
+    def encontrar_reserva(self, reserva: Reserva) -> int:
+        '''Procura por uma reserva e, caso exista, retorna seu index.
+        Do contrário, retorna -1.'''
+        index = busca_binaria(reserva, self.__lista, 0, len(self.__lista) - 1, "find")
+        if index != -1:  # reserva existe
+            return index
+        return -1  # reserva não encontrada
 
 # ----------------------------------------------------------
