@@ -4,13 +4,6 @@ class Socio:
         self.__cargo = cargo
         self.__ramal = ramal
 
-# ------------------------------------------------
-
-    def __str__(self):
-        return self.__nome
-
-# ------------------------------------------------
-
 # ------------- Acesso aos Atributos -------------
 
     def get_nome(self):
@@ -34,5 +27,12 @@ class Socio:
     nome = property(get_nome, set_nome)
     cargo = property(get_cargo, set_cargo)
     ramal = property(get_ramal, set_ramal)
+
+# ------------------------------------------------
+
+# ---------------- Magic Methods -----------------
+
+    def __str__(self):
+        return self.__nome
 
 # ------------------------------------------------

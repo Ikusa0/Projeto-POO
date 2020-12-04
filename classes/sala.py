@@ -1,3 +1,4 @@
+from classes.estruturas.lista_ordenada import ListaOrdenada
 from classes.reserva import Reserva
 from classes.socio import Socio
 
@@ -6,14 +7,14 @@ class Sala:
     def __init__(self, nome: str, vagas: int):
         self.__nome = nome
         self.__vagas = vagas
-        self.__reservas = []
+        self.__reservas = ListaOrdenada()
 
 # ------------------ Acesso aos Atributos ------------------
 
     def get_nome(self):
         return self.__nome
 
-    def set_nome(self, novo_nome : str):
+    def set_nome(self, novo_nome: str):
         self.__nome = novo_nome
 
     def get_vagas(self):
@@ -30,24 +31,18 @@ class Sala:
 # ------------------ Acesso a Informações ------------------
 
     def reservas(self) -> str:
-        reservas_string = []
-        for reserva in self.__reservas:
-            reservas_string.append(f'''------------------------------
-Reservante: {reserva.reservante}
-Inicio: {reserva.inicio()}
-Término: {reserva.termino()}
-------------------------------''')
-        return '\n\n'.join(reservas_string)
+        '''Retorna uma string contendo todas as reservas.'''
+        reservas_str = []
+        for reserva in self.__reservas.lista:
+            reservas_str.append(str(reserva))
+        return '\n'.join(reservas_str)
 
 # ----------------------------------------------------------
 
 # ----------------- Métodos de Modificações ----------------
 
     def reservar(self, reservante: Socio, data_hora: str, duracao: int) -> None:
-        self.__reservas.append(Reserva(reservante, data_hora, duracao))
-
-# ----------------------------------------------------------
-
-# --------------------- Métodos Helper ---------------------
+        '''Faz uma nova reserva.'''
+        self.__reservas.adicionar(Reserva(reservante, data_hora, duracao))
 
 # ----------------------------------------------------------
