@@ -37,6 +37,30 @@ class Sala:
             reservas_str.append(str(reserva))
         return '\n'.join(reservas_str)
 
+    def __reservas_do_socio_data(self, reservante: Socio, data: str) -> list:
+        '''Retorna uma lista contendo todas as reservas de um Sócio em determinada data.'''
+        reservas = []
+        for reserva in self.__reservas.lista:
+            # Checa se há reservas do Sócio no dia.
+            if reserva.str_data_inicio() == data and reserva.reservante == reservante:
+                reservas.append(reserva)
+        return reservas
+
+    def __reservas_do_socio_todas(self, reservante: Socio) -> list:
+        '''Retorna uma lista contendo todas as reservas de um Sócio.'''
+        reservas = []
+        for reserva in self.__reservas.lista:
+            # Checa se há reservas do Sócio.
+            if reserva.reservante == reservante:
+                reservas.append(str(reserva))
+        return reservas
+
+    def reservas_do_socio(self, reservante: Socio, data: str = None) -> list:
+        '''Retorna uma lista de reservas de determinado Sócio, podendo ter um dia específico.'''
+        if data is not None:
+            return self.__reservas_do_socio_data(reservante, data)
+        return self.__reservas_do_socio_todas(reservante)
+
 # ----------------------------------------------------------
 
 # ----------------- Métodos de Modificações ----------------
@@ -64,5 +88,13 @@ class Sala:
             self.__reservas.lista[index].data_hora = novo_data_hora
             return
         print("Reserva não encontrada.")
+
+# ----------------------------------------------------------
+
+# --------------------- Helper Methods ---------------------
+
+    def socio_reservou_horario(self, reservante: Socio, data_hora: str, duracao: int):
+        '''Checa se um Sócio possui uma reserva que dê choque com o horário informado.'''
+        return self.__reservas.existem_reservas_do_socio_no_horario(Reserva(reservante, data_hora, duracao))
 
 # ----------------------------------------------------------

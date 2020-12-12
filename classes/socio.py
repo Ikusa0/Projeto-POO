@@ -1,5 +1,5 @@
 class Socio:
-    def __init__(self, nome: str, cargo: str, ramal: str):
+    def __init__(self, nome: str, cargo: str, ramal: int):
         self.__nome = nome
         self.__cargo = cargo
         self.__ramal = ramal
@@ -21,7 +21,7 @@ class Socio:
     def get_ramal(self):
         return self.__ramal
 
-    def set_ramal(self, novo_ramal: str):
+    def set_ramal(self, novo_ramal: int):
         self.__ramal = novo_ramal
 
     nome = property(get_nome, set_nome)

@@ -51,21 +51,17 @@ class Reserva:
         '''Retorna a data e hora de início da reserva.'''
         return self.__data_hora.strftime("%d/%m/%Y %H:%M")
 
+    def str_data_inicio(self) -> str:
+        '''Retorna a data de início da reserva.'''
+        return self.__data_hora.date().strftime("%d/%m/%Y")
+
     def str_termino(self) -> str:
         '''Retorna a data e hora de término da reserva.'''
         return (self.__data_hora + timedelta(minutes=self.__duracao)).strftime("%d/%m/%Y %H:%M")
 
-    def choque_de_horario(self, other) -> bool:
-        '''Checa se há choque de horário entre esta e outra reserva.'''
-        if self.termino() >= other.inicio():
-            if self.termino() <= other.termino():
-                return True
-
-        if self.inicio() <= other.termino():
-            if self.termino() >= other.termino():
-                return True
-
-        return False
+    def str_data_termino(self) -> str:
+        '''Retorna a data de início da reserva.'''
+        return self.__data_hora.date().strftime("%d/%m/%Y")
 
 # ----------------------------------------------------------
 
@@ -86,5 +82,21 @@ Reservante: {self.__reservante.nome}
 Inicio: {self.str_inicio()}
 Término: {self.str_termino()}
 ------------------------------'''
+
+# ----------------------------------------------------------
+
+# --------------------- Helper Methods ---------------------
+
+    def choque_de_horario(self, other) -> bool:
+        '''Checa se há choque de horário entre esta e outra reserva.'''
+        if self.termino() >= other.inicio():
+            if self.termino() <= other.termino():
+                return True
+
+        if self.inicio() <= other.termino():
+            if self.termino() >= other.termino():
+                return True
+
+        return False
 
 # ----------------------------------------------------------

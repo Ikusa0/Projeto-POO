@@ -1,16 +1,16 @@
 from classes.reserva import Reserva
 
 
-def busca_binaria(target: Reserva, array: list, start: int, end: int, mode: str = "add") -> int:
+def busca_binaria(target: Reserva, array: list, start: int, end: int, mode: str = "") -> int:
     if start <= end:
         mid = (start + end) // 2
         if array[mid] == target:
-            return -1 if mode == "add" else mid
+            return mid
         if target > array[mid]:
             return busca_binaria(target, array, mid + 1, end, mode)
         else:
             return busca_binaria(target, array, start, mid - 1, mode)
-    return start if mode == "add" else -1
+    return -1 if mode == "find" else start
 
 
 class ListaOrdenada:
@@ -62,13 +62,11 @@ class ListaOrdenada:
 
     def esta_disponivel(self, reserva: Reserva, index: int) -> bool:
         '''Checa se existem choques nos horários entre 3 reservas consecutivas.'''
-        if index == -1:  # há uma reserva no mesmo horário
-            return False
         if reserva.choque_de_horario(self.__lista[index - 1]):  # a reserva anterior dá choque
             return False
         try:
-            if reserva.choque_de_horario(self.__lista[index]):  # a reserva posterior, se existir, dá choque
-                return False
+            if reserva.choque_de_horario(self.__lista[index]):  # há uma reserva no mesmo horário,
+                return False                                    # ou a reserva posterior, se existir, dá choque
         except IndexError: pass
         return True  # não há choques de horários
 
@@ -79,5 +77,21 @@ class ListaOrdenada:
         if index != -1:  # reserva existe
             return index
         return -1  # reserva não encontrada
+
+    def existem_reservas_do_socio_no_horario(self, reserva: Reserva) -> bool:
+        '''Checa se um Sócio possui uma reserva que dê choque com o horário informado.'''
+        index = busca_binaria(reserva, self.__lista, 0, len(self.__lista) - 1)
+        # checa se o choque foi na reserva anterior e verifica o Sócio
+        if reserva.choque_de_horario(self.__lista[index - 1]):
+            if self.__lista[index - 1].reservante == reserva.reservante:
+                return True
+        try:
+            # checa se há uma reserva no mesmo horário,
+            # ou se o choque foi na reserva posterior e verifica o Sócio
+            if reserva.choque_de_horario(self.__lista[index]):
+                if self.__lista[index].reservante == reserva.reservante:
+                    return True
+        except IndexError: pass
+        return False
 
 # ----------------------------------------------------------
