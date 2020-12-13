@@ -19,3 +19,17 @@ class SalaVip(Sala):
         print("Reservas em salas VIP são permitidas apenas para Sócios CEO.")
 
 # ----------------------------------------------------------
+
+# --------------------- Magic Methods ----------------------
+
+    def __str__(self):
+        return f'''------------------------------
+           [Sala VIP]
+Nome: {self.nome}
+Vagas: {self.vagas}
+------------------------------'''
+
+    def __repr__(self):
+        return self.__str__()
+
+# ----------------------------------------------------------

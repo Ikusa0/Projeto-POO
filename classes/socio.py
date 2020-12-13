@@ -33,6 +33,14 @@ class Socio:
 # ---------------- Magic Methods -----------------
 
     def __str__(self):
-        return self.__nome
+        return f'''------------------------------
+         [Sócio Comum]
+Nome: {self.__nome}
+Cargo: {self.__cargo}
+Ramal: {self.__ramal}
+------------------------------'''
+
+    def __repr__(self):
+        return self.__str__()
 
 # ------------------------------------------------

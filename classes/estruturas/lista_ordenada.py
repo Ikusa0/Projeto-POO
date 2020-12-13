@@ -39,6 +39,7 @@ class ListaOrdenada:
             return
 
         self.__lista.append(reserva)  # caso não existam reservas, basta reservar sem checagens
+        print("Operação concluída.\n")
 
     def remover(self, reserva: Reserva) -> None:
         '''Remove uma reserva da lista.'''
@@ -47,10 +48,11 @@ class ListaOrdenada:
             index = self.encontrar_reserva(reserva)
             if index != -1:  # caso exista a reserva, remova-a
                 self.__lista.pop(index)
+                print("Operação concluída.\n")
             else:
                 print("Reserva não encontrada.")  # do contrário, informe
             return
-        print("Ainda não foram feitas reservas.")  # se não houverem reservas feitas, informe
+        print("Ainda não foram feitas reservas nesta sala.")  # se não houverem reservas feitas, informe
 
 # ----------------------------------------------------------
 
@@ -74,12 +76,15 @@ class ListaOrdenada:
         '''Procura por uma reserva e, caso exista, retorna seu index.
         Do contrário, retorna -1.'''
         index = busca_binaria(reserva, self.__lista, 0, len(self.__lista) - 1, "find")
-        if index != -1:  # reserva existe
-            return index
+        if index != -1:  # existe reserva no horário
+            if reserva.reservante == self.__lista[index].reservante:  # reserva foi feita pelo sócio correspondente
+                return index
         return -1  # reserva não encontrada
 
     def existem_reservas_do_socio_no_horario(self, reserva: Reserva) -> bool:
         '''Checa se um Sócio possui uma reserva que dê choque com o horário informado.'''
+        if self.esta_vazia():
+            return False
         index = busca_binaria(reserva, self.__lista, 0, len(self.__lista) - 1)
         # checa se o choque foi na reserva anterior e verifica o Sócio
         if reserva.choque_de_horario(self.__lista[index - 1]):

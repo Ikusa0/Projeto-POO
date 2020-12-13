@@ -30,12 +30,26 @@ class Sala:
 
 # ------------------ Acesso a Informações ------------------
 
-    def reservas(self) -> str:
-        '''Retorna uma string contendo todas as reservas.'''
-        reservas_str = []
+    def __reservas_todas(self) -> list:
+        '''Retorna uma lista contendo todas as reservas.'''
+        reservas = []
         for reserva in self.__reservas.lista:
-            reservas_str.append(str(reserva))
-        return '\n'.join(reservas_str)
+            reservas.append(reserva)
+        return reservas
+
+    def __reservas_data(self, data: str) -> list:
+        '''Retorna uma lista contendo todas as reservas de um dia específico.'''
+        reservas = []
+        for reserva in self.__reservas.lista:
+            if reserva.str_data_inicio() == data:
+                reservas.append(reserva)
+        return reservas
+
+    def reservas(self, data: str = None) -> list:
+        '''Retorna uma lista contendo todas as reservas, ou as de um dia específico.'''
+        if data is not None:
+            return self.__reservas_data(data)
+        return self.__reservas_todas()
 
     def __reservas_do_socio_data(self, reservante: Socio, data: str) -> list:
         '''Retorna uma lista contendo todas as reservas de um Sócio em determinada data.'''
@@ -52,7 +66,7 @@ class Sala:
         for reserva in self.__reservas.lista:
             # Checa se há reservas do Sócio.
             if reserva.reservante == reservante:
-                reservas.append(str(reserva))
+                reservas.append(reserva)
         return reservas
 
     def reservas_do_socio(self, reservante: Socio, data: str = None) -> list:
@@ -91,10 +105,27 @@ class Sala:
 
 # ----------------------------------------------------------
 
+# --------------------- Magic Methods ----------------------
+
+    def __str__(self):
+        return f'''------------------------------
+           [Sala Comum]
+Nome: {self.__nome}
+Vagas: {self.__vagas}
+------------------------------'''
+
+    def __repr__(self):
+        return self.__str__()
+
+# ----------------------------------------------------------
+
 # --------------------- Helper Methods ---------------------
 
     def socio_reservou_horario(self, reservante: Socio, data_hora: str, duracao: int):
         '''Checa se um Sócio possui uma reserva que dê choque com o horário informado.'''
         return self.__reservas.existem_reservas_do_socio_no_horario(Reserva(reservante, data_hora, duracao))
 
+    def reserva_existe(self, reservante: Socio, data_hora: str):
+        '''Checa se existe uma reserva feita pelo sócio em dado horário.'''
+        return True if self.__reservas.encontrar_reserva(Reserva(reservante, data_hora)) != -1 else False
 # ----------------------------------------------------------

@@ -78,9 +78,9 @@ class Reserva:
 
     def __str__(self):
         return f'''------------------------------
-Reservante: {self.__reservante.nome}
-Inicio: {self.str_inicio()}
-Término: {self.str_termino()}
+• Reservante: {self.__reservante.nome}
+• Inicio: {self.str_inicio()}
+• Término: {self.str_termino()}
 ------------------------------'''
 
 # ----------------------------------------------------------
